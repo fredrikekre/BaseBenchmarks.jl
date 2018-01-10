@@ -79,7 +79,7 @@ end
 # Initialization #
 ##################
 
-g = addgroup!(SUITE, "initialization", ["AbstractVector", "AbstractSet", "Associative"])
+g = addgroup!(SUITE, "initialization", ["AbstractVector", "AbstractSet", "AbstractDict"])
 
 function perf_push!(c, elts)
     for e in elts
@@ -107,7 +107,7 @@ set_tolerance!(g)
 # Iteration #
 #############
 
-g = addgroup!(SUITE, "iteration", ["AbstractVector", "AbstractSet", "Associative"])
+g = addgroup!(SUITE, "iteration", ["AbstractVector", "AbstractSet", "AbstractDict"])
 
 foreach_container() do C, cstr, T, tstr, c
     g[cstr, tstr, "start"] = @benchmarkable start($c)
@@ -121,7 +121,7 @@ set_tolerance!(g)
 # Deletion #
 ############
 
-g = addgroup!(SUITE, "deletion", ["AbstractVector", "AbstractSet", "Associative"])
+g = addgroup!(SUITE, "deletion", ["AbstractVector", "AbstractSet", "AbstractDict"])
 
 function perf_pop!(c)
     while !isempty(c)
@@ -150,7 +150,7 @@ set_tolerance!(g)
 # Queries & Updates #
 #####################
 
-g = addgroup!(SUITE, "queries & updates", ["AbstractVector", "AbstractSet", "Associative"])
+g = addgroup!(SUITE, "queries & updates", ["AbstractVector", "AbstractSet", "AbstractDict"])
 
 foreach_container() do C, cstr, T, tstr, c
     if T === Int # seems unnecessary to run those with all types
