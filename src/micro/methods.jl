@@ -91,10 +91,16 @@ function perf_micro_randmatstat(t)
         d = randn(n,n)
         P = [a b c d]
         Q = [a b; c d]
-        v[i] = trace((P.'*P)^4)
-        w[i] = trace((Q.'*Q)^4)
+        v[i] = trace((AtA(P))^4)
+        w[i] = trace((AtA(Q))^4)
     end
     return (std(v)/mean(v), std(w)/mean(w))
+end
+
+@static if VERSION > v"0.6" # TODO: Find out which version the .' lowering was removed
+    AtA(A) = transpose(A)*A
+else
+    AtA(A) = A.'*A
 end
 
 ##############

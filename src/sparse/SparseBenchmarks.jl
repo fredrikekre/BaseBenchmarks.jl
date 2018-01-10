@@ -101,14 +101,14 @@ end
 for m in (small_sqr, small_rct, large_sqr, large_rct)
     cm = m + m*im
     s = size(m)
-    g["transpose", s] = @benchmarkable transpose($m)
-    g["transpose!", s] = @benchmarkable transpose!($(m.'), $m)
+    g["transpose", s] = @benchmarkable transpose($m) # TODO: This should be copy(transpose($m)) on 0.7
+    g["transpose!", s] = @benchmarkable transpose!($(copy(transpose(m))), $m)
     if VERSION >= v"0.7.0-DEV.1415"
-        g["adjoint", s] = @benchmarkable adjoint($cm)
-        g["adjoint!", s] = @benchmarkable adjoint!($(cm.'), $cm)
+        g["adjoint", s] = @benchmarkable adjoint($cm) # TODO: This should be copy(adjoint($m)) on 0.7
+        g["adjoint!", s] = @benchmarkable adjoint!($(copy(adjoint(cm))), $cm)
     else
-        g["ctranspose", s] = @benchmarkable ctranspose($cm)
-        g["ctranspose!", s] = @benchmarkable ctranspose!($(cm.'), $cm)
+        g["ctranspose", s] = @benchmarkable ctranspose($cm) # TODO: This should be copy(ctranspose($m)) on 0.7
+        g["ctranspose!", s] = @benchmarkable ctranspose!($(copy(ctranspose(cm))), $cm)
     end
 end
 
