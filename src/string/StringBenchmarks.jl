@@ -19,13 +19,23 @@ SUITE["join"] = @benchmarkable join($str, $str) time_tolerance=0.40
 
 str = "Gf6FPPWevqer3di13haDSzrRrSiThqmV3k02dALLu7OHdYRR0dfrKf4iCMcDvgZBawx"
 
-g = addgroup!(SUITE, "search")
-g["Char"] = @benchmarkable search($str,  $('x'))
-g["String"] = @benchmarkable search($str, $("x"))
+g = addgroup!(SUITE, "findfirst")
+if VERSION > v"0.6" # TODO: Find version
+    g["Char"]   = @benchmarkable findfirst($(equalto('x')), $str)
+    g["String"] = @benchmarkable findfirst($(equalto("x")), $str)
+else
+    g["Char"]   = @benchmarkable search($str, $('x'))
+    g["String"] = @benchmarkable search($str, $("x"))
+end
 
-g = addgroup!(SUITE, "searchindex")
-g["Char"] = @benchmarkable searchindex($str,  $('x'))
-g["String"] = @benchmarkable searchindex($str, $("x"))
+g = addgroup!(SUITE, "first(findfirst())")
+if VERSION > v"0.6" # TODO: Find version
+    g["Char"] = @benchmarkable first(findfirst($(equalto('x')), $str))
+    g["String"] = @benchmarkable first(findfirst($(equalto("x")), $str))
+else
+    g["Char"] = @benchmarkable searchindex($str,  $('x'))
+    g["String"] = @benchmarkable searchindex($str, $("x"))
+end
 
 ######################
 # readuntil (#20621) #
